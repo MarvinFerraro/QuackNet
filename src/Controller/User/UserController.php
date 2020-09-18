@@ -48,12 +48,12 @@ class UserController extends AbstractController
         }
 
     /**
-     * @Route("/{id}", name="user_show", methods={"GET"})
+     * @Route("/show", name="user_show", methods={"GET"})
      */
-    public function show(User $user): Response
+    public function show(): Response
     {
         return $this->render('user/show.html.twig', [
-            'user' => $user,
+            'user' => $this->getUser(),
         ]);
     }
 
@@ -63,9 +63,9 @@ class UserController extends AbstractController
     public function showAllQuacks(): Response
     {
         return $this->render('user/showAllQuacks.html.twig', [
-            'quacks' => $this->getUser()->getQuacks()
+            'quacks' => $this->getUser()->getQuacks(),
         ]);
-    }
+}
 
 
     /**

@@ -7,6 +7,7 @@ use App\Entity\User;
 use App\Form\QuackType;
 use App\Repository\QuackRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -78,6 +79,7 @@ class QuackController extends AbstractController
 
     /**
      * @Route("/{id}/edit", name="quack_edit", methods={"GET","POST"})
+     * @ParamConverter("edit_quack", class="App\Entity\Quack", options={"id" = id})
      */
     public function edit(Request $request, Quack $quack): Response
     {

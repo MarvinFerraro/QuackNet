@@ -30,5 +30,14 @@ security:
     # Easy way to control access for large sections of your site
     # Note: Only the *first* access control that matches will be used
     access_control:
-         - { path: /quack_new, roles: ROLE_USER }
-         - { path: /register, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+         - { path: '^/quack/new', roles: ROLE_USER }
+         - { path: '^/quack/edit', roles: ROLE_USER }
+         - { path: '^/quack/delete', roles: ROLE_USER }
+         - { path: '^/user/quacksuser', roles: ROLE_USER }
+         - { path: '^/user/delete', roles: ROLE_USER }
+         - { path: '^/user/show', roles: ROLE_USER }
+         - { path: '^/user/edit', roles: ROLE_USER }
+
+         - { path: '^/register', roles: IS_AUTHENTICATED_ANONYMOUSLY }
+         - { path: '^/', roles: IS_AUTHENTICATED_ANONYMOUSLY }
+
