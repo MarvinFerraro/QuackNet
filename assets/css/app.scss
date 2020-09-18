@@ -1,0 +1,24 @@
+@import "~bootswatch/dist/Slate/variables";
+@import "~bootstrap/scss/bootstrap";
+@import "~bootswatch/dist/Slate/bootswatch";
+@import "var";
+
+body {
+padding-top: 80px ;
+}
+.BoxQuacks {
+  margin: 0 auto 2em auto;
+}
+.QuackContent {
+  background-color: var(--secondColor);
+  color: var(--firstColor);
+}
+
+.Header{
+  z-index: 999;
+  position: fixed;
+  top: 0;
+  right: 0;
+  left: 0;
+  height: 80px;
+}

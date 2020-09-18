@@ -1,11 +1,13 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}New Quack{% endblock %}
+{% block title %}Nouveau Quack{% endblock %}
 
 {% block body %}
-    <h1>Create new Quack</h1>
+    <h1 class="mb-5">Création d'un nouveau post Quack</h1>
 
-    {{ include('quack/_form.html.twig') }}
+    <div class="mb-5 w-75">
+        {{ include('quack/_form.html.twig') }}
+    </div>
 
-    <a href="{{ path('quack_index') }}">back to list</a>
+    <a href="{{ path('quack_index') }}" class="btn btn-info mb-5">Accueil</a>
 {% endblock %}

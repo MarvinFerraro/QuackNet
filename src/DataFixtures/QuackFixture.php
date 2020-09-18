@@ -4,14 +4,16 @@ namespace App\DataFixtures;
 
 use App\Entity\Quack;
 use Doctrine\Bundle\FixturesBundle\Fixture;
+use Doctrine\Common\DataFixtures\OrderedFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
 
 class QuackFixture extends Fixture
 {
+
     public function load(ObjectManager $manager)
     {
-        $Quack1 = new Quack();
 
+        $Quack1 = new Quack();
         $Quack1->setContent("Quack Quack Quack");
         $Quack1->setCreatedAt();
         $manager->persist($Quack1);
@@ -38,4 +40,5 @@ class QuackFixture extends Fixture
 
         $manager->flush();
     }
+
 }

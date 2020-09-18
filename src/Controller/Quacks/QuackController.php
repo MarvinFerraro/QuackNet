@@ -1,13 +1,16 @@
 <?php
 
-namespace App\Controller;
+namespace App\Controller\Quacks;
 
 use App\Entity\Quack;
+use App\Entity\User;
 use App\Form\QuackType;
 use App\Repository\QuackRepository;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
@@ -15,13 +18,25 @@ use Symfony\Component\Routing\Annotation\Route;
  */
 class QuackController extends AbstractController
 {
+
+    protected $quackRepository;
+    protected $em;
+    private $session;
+
+    public function __construct(QuackRepository $quackRepository, EntityManagerInterface $em, SessionInterface $session)
+    {
+        $this->quackRepository = $quackRepository;
+        $this->em = $em;
+        $this->session = $session;
+    }
+
     /**
      * @Route("/", name="quack_index", methods={"GET"})
      */
-    public function index(QuackRepository $quackRepository): Response
+    public function index(): Response
     {
         return $this->render('quack/index.html.twig', [
-            'quacks' => $quackRepository->findAll(),
+            'quacks' => $this->quackRepository->findAll(),
         ]);
     }
 
@@ -35,9 +50,11 @@ class QuackController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $entityManager = $this->getDoctrine()->getManager();
-            $entityManager->persist($quack);
-            $entityManager->flush();
+
+            $quack->setUser($this->getUser());
+
+            $this->em->persist($quack);
+            $this->em->flush();
 
             return $this->redirectToRoute('quack_index');
         }
@@ -58,6 +75,7 @@ class QuackController extends AbstractController
         ]);
     }
 
+
     /**
      * @Route("/{id}/edit", name="quack_edit", methods={"GET","POST"})
      */
@@ -67,7 +85,7 @@ class QuackController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $this->getDoctrine()->getManager()->flush();
+            $this->em->flush();
 
             return $this->redirectToRoute('quack_index');
         }
@@ -84,9 +102,9 @@ class QuackController extends AbstractController
     public function delete(Request $request, Quack $quack): Response
     {
         if ($this->isCsrfTokenValid('delete'.$quack->getId(), $request->request->get('_token'))) {
-            $entityManager = $this->getDoctrine()->getManager();
-            $entityManager->remove($quack);
-            $entityManager->flush();
+
+            $this->em->remove($quack);
+            $this->em->flush();
         }
 
         return $this->redirectToRoute('quack_index');

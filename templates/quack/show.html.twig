@@ -5,26 +5,23 @@
 {% block body %}
     <h1>Quack</h1>
 
-    <table class="table">
-        <tbody>
-            <tr>
-                <th>Id</th>
-                <td>{{ quack.id }}</td>
-            </tr>
-            <tr>
-                <th>Content</th>
-                <td>{{ quack.content }}</td>
-            </tr>
-            <tr>
-                <th>Created_at</th>
-                <td>{{ quack.createdAt ? quack.createdAt|date('Y-m-d H:i:s') : '' }}</td>
-            </tr>
-        </tbody>
-    </table>
+    <div class="card w-75 BoxQuacks">
+        <div class="card-body">
+            <div class="mb-2">
+                <p class="card-title"> {{ quack.user.duckname }}</p>
+                <p class="card-text card-body QuackContent">{{ quack.content }}</p>
+                <small>{{ quack.createdAt ? quack.createdAt|date('Y-m-d H:i:s') : '' }}</small>
+            </div>
+            <div>
+                <a href="{{ path('quack_show', {'id': quack.id}) }}" class="btn-info btn">Voir plus</a>
+                <a href="{{ path('quack_edit', {'id': quack.id}) }}" class="btn btn-danger">Modifier</a>
+            </div>
+        </div>
+    </div>
 
-    <a href="{{ path('quack_index') }}">back to list</a>
+    <a href="{{ path('quack_index') }}" class="btn btn-info mb-3">Accueil</a>
 
-    <a href="{{ path('quack_edit', {'id': quack.id}) }}">edit</a>
+    <a href="{{ path('quack_edit', {'id': quack.id}) }}" class="btn btn-warning mb-3">edit</a>
 
     {{ include('quack/_delete_form.html.twig') }}
 {% endblock %}

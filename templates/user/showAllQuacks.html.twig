@@ -1,16 +1,14 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Quack index{% endblock %}
+{% block title %}Mes Quacks{% endblock %}
 
 {% block body %}
-    <h1 class="mb-5">Liste des Quacks</h1>
-
+    <h1>Mes Quacks</h1>
     {% for quack in quacks %}
-
         <div class="card w-75 BoxQuacks">
             <div class="card-body">
                 <div class="mb-2">
-                    <h5 class="card-title"><small>Poster par :</small> {{ quack.user.duckname }}</h5>
+                    <p class="card-title"> {{ quack.user.duckname }}</p>
                     <p class="card-text card-body QuackContent">{{ quack.content }}</p>
                     <small>{{ quack.createdAt ? quack.createdAt|date('Y-m-d H:i:s') : '' }}</small>
                 </div>
@@ -19,13 +17,9 @@
                     <a href="{{ path('quack_edit', {'id': quack.id}) }}" class="btn btn-danger">Modifier</a>
                 </div>
             </div>
+            <a href="{{ path('quack_edit', {'id': quack.id}) }}" class="btn btn-warning mb-3">edit</a>
+            {{ include('quack/_delete_form.html.twig') }}
         </div>
-    {% else %}
-        <p>Aucune publication trouver</p>
     {% endfor %}
 
-    <div class="d-flex m-auto">
-        <a href="{{ path('quack_new') }}" class="btn btn-info rounded-pill m-auto">Publier</a>
-
-    </div>
 {% endblock %}
