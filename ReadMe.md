@@ -24,7 +24,7 @@ Télecharger Symfony sur le site et l'installer (Définir la variable d'environn
 
 ##### Etapes pour installation du projet
 
-* Forker le projet depuis github. <br/>
+* Récuper le projet depuis github. <br/>
 
 * Rentrer dans le projet créer <br/>
 
