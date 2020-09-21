@@ -28,9 +28,9 @@ Télecharger Symfony sur le site et l'installer (Définir la variable d'environn
 
 * Rentrer dans le projet créer <br/>
 
-* Faire un composer installer dans le project. <br/>
+* Faire un `composer install` dans le project. <br/>
 
-* Faire une npm -install. <br/>
+* Faire une `npm -install` . <br/>
 
 * Ensuite modifier vos information dans le .env pour les configurations de votre phpMyAdmin. <br/>
 
