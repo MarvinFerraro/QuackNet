@@ -8,6 +8,7 @@ use App\Form\UserType;
 use App\Repository\QuackRepository;
 use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -48,6 +49,7 @@ class UserController extends AbstractController
         }
 
     /**
+     * @IsGranted("ROLE_USER")
      * @Route("/show", name="user_show", methods={"GET"})
      */
     public function show(): Response
@@ -58,6 +60,7 @@ class UserController extends AbstractController
     }
 
     /**
+     * @IsGranted("ROLE_USER")
      * @Route("/quacksuser", name="quacksUser_show", methods={"GET"})
      */
     public function showAllQuacks(): Response
@@ -69,6 +72,7 @@ class UserController extends AbstractController
 
 
     /**
+     * @IsGranted("ROLE_USER")
      * @Route("/{id}/edit", name="user_edit", methods={"GET","POST"})
      */
     public function edit(Request $request, User $user): Response
@@ -89,6 +93,7 @@ class UserController extends AbstractController
     }
 
     /**
+     * @IsGranted("ROLE_USER")
      * @Route("/{id}", name="user_delete", methods={"DELETE"})
      */
     public function delete(Request $request, User $user): Response

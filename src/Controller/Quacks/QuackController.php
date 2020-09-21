@@ -7,7 +7,7 @@ use App\Entity\User;
 use App\Form\QuackType;
 use App\Repository\QuackRepository;
 use Doctrine\ORM\EntityManagerInterface;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -42,6 +42,7 @@ class QuackController extends AbstractController
     }
 
     /**
+     * @IsGranted("ROLE_USER")
      * @Route("/new", name="quack_new", methods={"GET","POST"})
      */
     public function new(Request $request): Response
@@ -78,27 +79,44 @@ class QuackController extends AbstractController
 
 
     /**
+     * @IsGranted("ROLE_USER")
      * @Route("/{id}/edit", name="quack_edit", methods={"GET","POST"})
-     * @ParamConverter("edit_quack", class="App\Entity\Quack", options={"id" = id})
+     *
      */
     public function edit(Request $request, Quack $quack): Response
     {
-        $form = $this->createForm(QuackType::class, $quack);
-        $form->handleRequest($request);
+        $quackChoose = $this->quackRepository->find($quack)->getUser();
+        $user = $this->getUser();
 
-        if ($form->isSubmitted() && $form->isValid()) {
-            $this->em->flush();
+        if ($quackChoose == $user)
+        {
+            $form = $this->createForm(QuackType::class, $quack);
+            $form->handleRequest($request);
 
-            return $this->redirectToRoute('quack_index');
+            if ($form->isSubmitted() && $form->isValid()) {
+                $this->em->flush();
+
+                return $this->redirectToRoute('quack_index');
+            }
+
+            return $this->render('quack/edit.html.twig', [
+                'quack' => $quack,
+                'form' => $form->createView(),
+            ]);
+
+        } else {
+            //return $this->redirectToRoute('quack_index');
+
+            $errorMessage = "Pas votre quack!";
+            return $this->render('quack/index.html.twig', [
+                'quacks' => $this->quackRepository->findAll(),
+                'errorMessage' => $errorMessage
+            ]);
         }
-
-        return $this->render('quack/edit.html.twig', [
-            'quack' => $quack,
-            'form' => $form->createView(),
-        ]);
     }
 
     /**
+     * @IsGranted("ROLE_USER")
      * @Route("/{id}", name="quack_delete", methods={"DELETE"})
      */
     public function delete(Request $request, Quack $quack): Response
