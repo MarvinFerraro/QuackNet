@@ -22,3 +22,15 @@ padding-top: 80px ;
   left: 0;
   height: 80px;
 }
+
+.flash-notice {
+  margin: 8px;
+  padding-left: 8px;
+  width: 150px;
+  background-color: rgb(113, 241, 113)
+}
+
+.hide {
+  opacity: 0;
+  transition: opacity 1000ms;
+}

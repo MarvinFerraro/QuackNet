@@ -1,0 +1,18 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Home page{% endblock %}
+
+{% block body %}
+    <a href="{{ path('test_mail') }}">Send a test mail</a>
+
+    {% for message in app.flashes('notice') %}
+        <div id="flash-notice" class="flash-notice">
+            {{ message }}
+        </div>
+    {% endfor %}
+
+    {% block javascripts %}
+        <script src="assets/js/app.js"></script>
+    {% endblock %}
+
+{% endblock %}

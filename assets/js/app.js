@@ -12,3 +12,10 @@ import '../css/app.scss';
  import $ from 'jquery';
 
 console.log('Hello Webpack Encore! Edit me in assets/js/app.js');
+
+const flash = document.getElementById('flash-notice');
+
+flash.addEventListener('click', function () {
+
+ flash.classList.add('hide');
+});

@@ -5,6 +5,7 @@ namespace App\Controller\Register;
 use App\Entity\User;
 use App\Form\UserType;
 use App\Repository\UserRepository;
+use App\Services\Mailer;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -17,17 +18,22 @@ class RegisterController extends AbstractController
     protected $userRepository;
     protected $em;
     protected $passwordEncoder;
+    protected $mailer;
 
     /**
      * UserController constructor.
      * @param $userRepository
      * @param $entityManager
      */
-    public function __construct(UserRepository $userRepository, EntityManagerInterface $entityManager,UserPasswordEncoderInterface $passwordEncoder)
+    public function __construct(UserRepository $userRepository,
+                                EntityManagerInterface $entityManager,
+                                UserPasswordEncoderInterface $passwordEncoder,
+                                Mailer $mailer)
     {
         $this->userRepository = $userRepository;
         $this->em = $entityManager;
         $this->passwordEncoder = $passwordEncoder;
+        $this->mailer = $mailer;
     }
 
     /**
@@ -44,6 +50,12 @@ class RegisterController extends AbstractController
             $user->setPassword($this->passwordEncoder->encodePassword($user, $user->getPassword()));
             $this->em->persist($user);
             $this->em->flush();
+
+            $this->mailer->SendMail($this->render(
+                'emails/myemail.html.twig', [
+                    'user' => $user
+                ]
+            ));
 
             return $this->redirectToRoute('app_login');
         }
