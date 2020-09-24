@@ -12,7 +12,6 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
@@ -22,20 +21,16 @@ class UserController extends AbstractController
 {
     protected $userRepository;
     protected $em;
-    protected $quackRespository;
-    private $session;
 
     /**
      * UserController constructor.
      * @param $userRepository
      * @param $entityManager
      */
-    public function __construct(UserRepository $userRepository, EntityManagerInterface $entityManager, QuackRepository $quackRepository, SessionInterface $session)
+    public function __construct(UserRepository $userRepository, EntityManagerInterface $entityManager)
     {
         $this->usersRepository = $userRepository;
         $this->em = $entityManager;
-        $this->quackRespository = $quackRepository;
-        $this->session = $session;
     }
 
         /**
@@ -73,17 +68,18 @@ class UserController extends AbstractController
 
     /**
      * @IsGranted("ROLE_USER")
-     * @Route("/{id}/edit", name="user_edit", methods={"GET","POST"})
+     * @Route("/edit", name="user_edit", methods={"GET","POST"})
      */
-    public function edit(Request $request, User $user): Response
+    public function edit(Request $request): Response
     {
+        $user = $this->getUser();
         $form = $this->createForm(UserType::class, $user);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
             $this->em->flush();
 
-            return $this->redirectToRoute('users_index');
+            return $this->redirectToRoute('user_show');
         }
 
         return $this->render('user/edit.html.twig', [
